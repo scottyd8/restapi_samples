@@ -4,6 +4,7 @@ using System.Web;
 using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Json;
 
 public class Foo
 {
@@ -43,10 +44,9 @@ public class Foo
         using (StreamReader responseReader = new StreamReader(webStream))
         {
             string response = responseReader.ReadToEnd();
-            var m1 = Regex.Match(response, @"\""message\"":\""(.*?)\""");
-            Console.WriteLine("message: {0}", m1.Groups[1].Value);
-            var m2 = Regex.Match(response, @"\""transactionId\"":(.*?),");
-            Console.WriteLine("transactionId: {0}", m2.Groups[1].Value);
+            var r = JsonValue.Parse(response);
+            Console.WriteLine("message: {0}", r["message"]);
+            Console.WriteLine("transactionId: {0}", r["transaction"]["transactionId"]);
         }
     }
 }
